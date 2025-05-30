@@ -2,62 +2,32 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>MEIキャッチ！！</title>
+  <title>マナティバームクーヘンキャッチ！</title>
   <style>
-    body { margin: 0; overflow: hidden; background: skyblue; font-family: sans-serif; }
-    #title {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 36px;
-      font-weight: bold;
-      color: white;
-      text-shadow: 2px 2px 4px #333;
-      z-index: 1000;
-    }
-    #rabbit {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100px;
-      transition: left 0.3s;
-      z-index: 10;
-    }
-    .carrot {
-      position: absolute;
-      top: 0;
-      width: 60px;
-      animation: drop 6s linear forwards;
-      z-index: 5;
-    }
+    body { margin: 0; overflow: hidden; background: skyblue; }
+    #manatee { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); width: 80px; transition: left 0.1s; }
+    .baumkuchen { position: absolute; top: 0; width: 40px; animation: drop 3s linear infinite; }
     @keyframes drop {
-      0% { top: -60px; }
+      0% { top: -50px; }
       100% { top: 100vh; }
     }
   </style>
 </head>
 <body>
-  <div id="title">MEIキャッチ！！</div>
-  <img src="rabbit.png" id="rabbit">
+  <img src="manatee.png" id="manatee">
   <script>
-    const rabbit = document.getElementById('rabbit');
-    document.addEventListener('touchstart', e => {
-      const x = e.touches[0].clientX;
-      rabbit.style.left = `${x}px`;
+    const manatee = document.getElementById('manatee');
+    document.addEventListener('touchmove', e => {
+      manatee.style.left = `${e.touches[0].clientX}px`;
     });
-
-    function dropCarrot() {
-      const carrot = document.createElement('img');
-      carrot.src = 'carrot.png';
-      carrot.className = 'carrot';
-      carrot.style.left = `${Math.random() * window.innerWidth}px`;
-      document.body.appendChild(carrot);
-      setTimeout(() => carrot.remove(), 6000);
-    }
-
-    setInterval(dropCarrot, 2000);
+    setInterval(() => {
+      const baum = document.createElement('img');
+      baum.src = 'baumkuchen.png';
+      baum.className = 'baumkuchen';
+      baum.style.left = `${Math.random() * window.innerWidth}px`;
+      document.body.appendChild(baum);
+      setTimeout(() => baum.remove(), 3000);
+    }, 1000);
   </script>
 </body>
 </html>
