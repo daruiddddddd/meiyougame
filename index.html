@@ -2,31 +2,80 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>マナティバームクーヘンキャッチ！</title>
+  <title>MEIちゃんゲーム</title>
   <style>
-    body { margin: 0; overflow: hidden; background: skyblue; }
-    #manatee { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); width: 80px; transition: left 0.1s; }
-    .baumkuchen { position: absolute; top: 0; width: 40px; animation: drop 3s linear infinite; }
+    body { margin: 0; overflow: hidden; background: skyblue; font-family: sans-serif; }
+    #mei { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); width: 80px; transition: left 0.1s; }
+    .item { position: absolute; top: 0; width: 40px; animation: drop 3s linear infinite; }
     @keyframes drop {
       0% { top: -50px; }
       100% { top: 100vh; }
     }
+    #score {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 20px;
+      color: white;
+      text-shadow: 1px 1px 2px black;
+      z-index: 10;
+    }
+    #title {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      color: white;
+      text-shadow: 2px 2px 4px #000;
+      z-index: 10;
+    }
   </style>
 </head>
 <body>
-  <img src="manatee.png" id="manatee">
+  <div id="score">スコア: 0</div>
+  <div id="title">MEIちゃんようゲーム</div>
+  <img src="mei.png" id="mei">
+  <audio id="catchSound" src="catch.mp3" preload="auto"></audio>
   <script>
-    const manatee = document.getElementById('manatee');
+    const mei = document.getElementById('mei');
+    const scoreEl = document.getElementById('score');
+    const sound = document.getElementById('catchSound');
+    let score = 0;
+
     document.addEventListener('touchmove', e => {
-      manatee.style.left = `${e.touches[0].clientX}px`;
-    });
+      e.preventDefault();
+      mei.style.left = `${e.touches[0].clientX}px`;
+    }, { passive: false });
+
     setInterval(() => {
-      const baum = document.createElement('img');
-      baum.src = 'baumkuchen.png';
-      baum.className = 'baumkuchen';
-      baum.style.left = `${Math.random() * window.innerWidth}px`;
-      document.body.appendChild(baum);
-      setTimeout(() => baum.remove(), 3000);
+      const item = document.createElement('img');
+      item.src = 'item.png';
+      item.className = 'item';
+      item.style.left = `${Math.random() * window.innerWidth}px`;
+      document.body.appendChild(item);
+
+      const interval = setInterval(() => {
+        const itemRect = item.getBoundingClientRect();
+        const meiRect = mei.getBoundingClientRect();
+        if (
+          itemRect.bottom >= meiRect.top &&
+          itemRect.left < meiRect.right &&
+          itemRect.right > meiRect.left
+        ) {
+          score++;
+          scoreEl.textContent = `スコア: ${score}`;
+          sound.currentTime = 0;
+          sound.play();
+          item.remove();
+          clearInterval(interval);
+        }
+      }, 50);
+
+      setTimeout(() => {
+        item.remove();
+        clearInterval(interval);
+      }, 3000);
     }, 1000);
   </script>
 </body>
