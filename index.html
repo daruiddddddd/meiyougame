@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>にんじんキャッチ！</title>
+  <style>
+    body { margin: 0; overflow: hidden; background: skyblue; }
+    #rabbit { position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); width: 80px; transition: left 0.1s; }
+    .carrot { position: absolute; top: 0; width: 40px; animation: drop 3s linear infinite; }
+    @keyframes drop {
+      0% { top: -50px; }
+      100% { top: 100vh; }
+    }
+  </style>
+</head>
+<body>
+  <img src="rabbit.png" id="rabbit">
+  <script>
+    const rabbit = document.getElementById('rabbit');
+    document.addEventListener('touchmove', e => {
+      rabbit.style.left = `${e.touches[0].clientX}px`;
+    });
+    setInterval(() => {
+      const carrot = document.createElement('img');
+      carrot.src = 'carrot.png';
+      carrot.className = 'carrot';
+      carrot.style.left = `${Math.random() * window.innerWidth}px`;
+      document.body.appendChild(carrot);
+      setTimeout(() => carrot.remove(), 3000);
+    }, 1000);
+  </script>
+</body>
+</html>
